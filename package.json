@@ -23,7 +23,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^24",
     "@types/nodemailer": "^7.0.9",
     "@types/react": "^19",
     "@types/react-dom": "^19",
