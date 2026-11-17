@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   ActionIcon,
   AspectRatio,
@@ -42,14 +42,6 @@ const ConsultantCard = ({ consultant, isEditable, onUpdate }: ConsultantCardProp
   });
   const [error, setError] = useState<string | null>(null);
   const [savingField, setSavingField] = useState<EditableField | null>(null);
-
-  useEffect(() => {
-    setDraft({
-      name: consultant.name,
-      focus: consultant.focus,
-      about: consultant.about,
-    });
-  }, [consultant]);
 
   const startEdit = (field: EditableField) => {
     setError(null);
@@ -196,10 +188,13 @@ const ConsultantCard = ({ consultant, isEditable, onUpdate }: ConsultantCardProp
 
 export const ConsultantGrid = ({ consultants, isEditable = false }: ConsultantGridProps) => {
   const [items, setItems] = useState(consultants);
+  const [prevConsultants, setPrevConsultants] = useState(consultants);
 
-  useEffect(() => {
+  // Reset local edits when the server-provided list changes.
+  if (consultants !== prevConsultants) {
+    setPrevConsultants(consultants);
     setItems(consultants);
-  }, [consultants]);
+  }
 
   const handleUpdate = async (photo: string, updates: ConsultantUpdates) => {
     const response = await fetch("/api/consultants/update", {
